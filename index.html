@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSpin Tech | Computing, Reimagined by Nature</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        // MathJax configuration for rendering LaTeX formulas
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+        /* Custom styles to complement Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(74, 222, 128, 0.4), 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4ade80; /* green-400 */
+            transition: width 0.3s ease;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #4ade80; /* green-400 */
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .card {
+            background-color: rgba(20, 32, 25, 0.5);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.1);
+            border-color: rgba(74, 222, 128, 0.4);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #4ade80, #22c55e);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.2);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4);
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        .stack-control-btn {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            transition: all 0.3s ease;
+        }
+        .stack-control-btn:hover {
+             background-color: rgba(74, 222, 128, 0.2);
+             border-color: rgba(74, 222, 128, 0.5);
+        }
+        .stack-control-btn.active {
+            background: linear-gradient(45deg, #4ade80, #22c55e);
+            color: #0a0a0a;
+            font-weight: bold;
+            border-color: #4ade80;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header and Navigation -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-lg border-b border-slate-800 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-white glow-text">BioSpin</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#science" class="nav-link">The Science</a>
+                <a href="#platform" class="nav-link">The Platform</a>
+                <a href="#future" class="nav-link">The Future</a>
+                <a href="#applications" class="nav-link">Applications</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#resources" class="nav-link">Resources</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#home" class="block py-2 text-white nav-link">Home</a>
+            <a href="#science" class="block py-2 text-white nav-link">The Science</a>
+            <a href="#platform" class="block py-2 text-white nav-link">The Platform</a>
+            <a href="#future" class="block py-2 text-white nav-link">The Future</a>
+            <a href="#applications" class="block py-2 text-white nav-link">Applications</a>
+            <a href="#about" class="block py-2 text-white nav-link">About</a>
+            <a href="#resources" class="block py-2 text-white nav-link">Resources</a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="pt-20">
+        <!-- Content will be injected here by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900/50 border-t border-slate-800 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-400">
+            <p>&copy; 2025 BioSpin Technologies. All rights reserved.</p>
+            <p class="text-sm mt-2">Pioneering a sustainable future for computation, from Avignon, France.</p>
+        </div>
+    </footer>
+
+    <!-- Templates for each page -->
+    <template id="page-home">
+        <div class="relative min-h-[80vh] flex items-center justify-center text-center overflow-hidden">
+            <canvas id="hero-canvas" class="hero-canvas"></canvas>
+            <div class="relative z-10 container mx-auto px-6">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 glow-text fade-in">Computing, Reimagined by Nature.</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-8 fade-in" style="transition-delay: 0.2s;">The digital world is facing an energy crisis. We're pioneering a sustainable future by harnessing the power of biology. Our magnetosome-based spintronic computers operate with unparalleled efficiency, leaving today's silicon technology behind.</p>
+                <a href="#platform" class="btn-primary text-white font-bold py-3 px-8 rounded-full text-lg inline-block fade-in" style="transition-delay: 0.4s;">Explore the Technology</a>
+            </div>
+        </div>
+        <section class="py-16 md:py-24 bg-black/20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white fade-in">The End of an Era, The Dawn of Another</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-semibold text-green-400 mb-4">The Problem: The Unseen Cost of Computation</h3>
+                        <p class="text-slate-300 leading-relaxed">Today's computing landscape, built on CMOS technology, is unsustainable. Blockchain applications alone consume the energy of a small nation (~150 TWh/year), with each operation costing precious nanojoules. With physical scaling limits and thermal bottlenecks, we can't afford to continue down this path.</p>
+                    </div>
+                    <div class="fade-in" style="transition-delay: 0.2s;">
+                        <h3 class="text-2xl font-semibold text-green-400 mb-4">Our Solution: Harnessing Biological Precision 🧬</h3>
+                        <p class="text-slate-300 leading-relaxed mb-4">We leverage magnetosomes—perfectly formed, 40 nm magnetic nanoparticles created by bacteria—as the foundation for a new computational paradigm. By manipulating electron spin instead of charge, our platform achieves:</p>
+                        <ul class="space-y-2 text-slate-300">
+                            <li><span class="text-green-400 font-semibold">Femtojoule Efficiency:</span> Operations are thousands of times more energy-efficient than CMOS.</li>
+                            <li><span class="text-green-400 font-semibold">Inherent Non-Volatility:</span> Data is retained with zero power, eliminating idle energy waste.</li>
+                            <li><span class="text-green-400 font-semibold">Sustainable & Scalable:</span> Our bio-hybrid design is built for the future, moving beyond the physical limits of silicon.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-16 md:py-24">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl md:text-4xl font-bold text-white fade-in">From Foundational Science to a Revolutionary Platform</h2>
+                     <p class="mt-4 max-w-2xl mx-auto text-slate-400 fade-in">Our technology is a journey from a groundbreaking theoretical framework to a fully realised computational stack, with a clear vision for the future of adaptive hardware.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card p-8 text-center rounded-xl fade-in">
+                        <h3 class="text-xl font-bold text-green-400 mb-4">1. The Foundation</h3>
+                        <p class="text-slate-300 mb-6">It begins with a new understanding of computation, based on the physics of spin waves and magnetic interactions within self-organising biological chains.</p>
+                        <a href="#science" class="font-semibold text-white hover:text-green-400 transition">Learn the Science &rarr;</a>
+                    </div>
+                    <div class="card p-8 text-center rounded-xl fade-in" style="transition-delay: 0.2s;">
+                        <h3 class="text-xl font-bold text-green-400 mb-4">2. The Platform</h3>
+                        <p class="text-slate-300 mb-6">We've engineered a tangible, four-layer bio-hybrid platform that unifies parallel computing, logic, cache, and storage, all programmable with our custom language, Slang#.</p>
+                        <a href="#platform" class="font-semibold text-white hover:text-green-400 transition">Discover the Platform &rarr;</a>
+                    </div>
+                    <div class="card p-8 text-center rounded-xl fade-in" style="transition-delay: 0.4s;">
+                        <h3 class="text-xl font-bold text-green-400 mb-4">3. The Future</h3>
+                        <p class="text-slate-300 mb-6">The next frontier is hardware that physically reshapes itself in milliseconds, optimising its structure for any algorithm by integrating magnetosome chains within smart fluids.</p>
+                        <a href="#future" class="font-semibold text-white hover:text-green-400 transition">See the Future &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="page-science">
+        <div class="container mx-auto px-6 py-12">
+            <div class="max-w-4xl mx-auto">
+                <header class="text-center mb-12 fade-in">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-white glow-text mb-4">The Foundation: Physics of Bio-Spintronics</h1>
+                    <p class="text-lg text-slate-300">Our work is built upon the "Magnetosome-Based Spintronic Computation: A Theoretical Framework" by Julien Pierre Salomon. It reimagines computation by moving away from charge-based transistors to the rich, dynamic behaviour of biological magnetic nanoparticles.</p>
+                </header>
+
+                <section class="mb-12 fade-in">
+                    <h2 class="text-3xl font-bold text-green-400 mb-4">What are Magnetosomes?</h2>
+                    <p class="text-slate-300 leading-relaxed">Magnetosomes are marvels of natural engineering. They are membrane-bound, single-domain crystals of magnetite ($Fe_3O_4$) with high chemical purity, produced by magnetotactic bacteria. These nanoparticles (~40 nm) naturally self-assemble into perfectly ordered chains, making them an ideal substrate for spintronic applications.</p>
+                </section>
+
+                <section class="fade-in mb-16">
+                    <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">Core Computational Principles</h2>
+                    <div class="space-y-8">
+                        <div class="card p-6 rounded-lg">
+                            <h3 class="text-2xl font-semibold text-white mb-3">Magnetisation Dynamics (The LLG Equation)</h3>
+                            <p class="text-slate-300 leading-relaxed mb-4">The behaviour of each magnetosome is governed by the Landau-Lifshitz-Gilbert (LLG) equation. This describes the precessional motion and damping of the nanoparticle's magnetic moment ($M$) in response to an effective magnetic field ($H_{eff}$). This dynamic evolution forms the basis of all computation in our system.</p>
+                            <div class="p-4 bg-slate-900 rounded-md text-center text-lg overflow-x-auto">
+                                $$\frac{d\mathbf{M}}{dt} = -\gamma \mathbf{M} \times \mathbf{H}_{\text{eff}} + \frac{\alpha}{M_s} \mathbf{M} \times \frac{d\mathbf{M}}{dt}$$
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-lg">
+                            <h3 class="text-2xl font-semibold text-white mb-3">Information Encoding via Spin States</h3>
+                            <p class="text-slate-300 leading-relaxed">Instead of using electrical charge for binary bits, we encode information in the magnetic orientation (spin) of magnetosomes. This allows for richer data representation, including:</p>
+                             <ul class="list-disc list-inside mt-4 text-slate-300 space-y-2">
+                                <li><strong>Binary:</strong> Spin-up vs. spin-down for 0 and 1.</li>
+                                <li><strong>Multi-Valued:</strong> The precise orientation angle represents different values.</li>
+                                <li><strong>Analog:</strong> The continuous variation of the magnetisation vector.</li>
+                            </ul>
+                        </div>
+                        <div class="card p-6 rounded-lg">
+                            <h3 class="text-2xl font-semibold text-white mb-3">Logic via Magnetic Interactions</h3>
+                            <p class="text-slate-300 leading-relaxed">Computation doesn't happen in traditional logic gates, but through the fundamental magnetic interactions between magnetosomes. Key mechanisms include:</p>
+                            <ul class="list-disc list-inside mt-4 text-slate-300 space-y-2">
+                                <li><strong>Spin Waves (Magnons):</strong> Collective excitations that propagate information through interference patterns.</li>
+                                <li><strong>Magnetic Coupling:</strong> Direct dipolar interactions between neighbouring magnetosomes, allowing them to influence each other's state.</li>
+                                <li><strong>Domain Wall Motion:</strong> The movement of boundaries between magnetic domains, which can carry and process information sequentially.</li>
+                            </ul>
+                        </div>
+                         <div class="card p-6 rounded-lg">
+                            <h3 class="text-2xl font-semibold text-white mb-3">Architecture via Self-Organisation</h3>
+                            <p class="text-slate-300 leading-relaxed">Our systems move beyond fixed, rigid circuits. Magnetosome networks are created through self-organising or field-directed assembly, creating complex, emergent architectures perfectly suited for unconventional computing paradigms like Reservoir Computing.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="fade-in">
+                    <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">Computational Validation: Simulation Results</h2>
+                    <p class="text-center text-slate-400 max-w-2xl mx-auto mb-10">The theoretical framework is supported by extensive computational simulations that validate the key physical mechanisms and assess their computational capabilities. These results provide strong evidence for the feasibility of our approach.</p>
+                    <div class="space-y-10">
+                        <div class="card p-6 rounded-lg grid md:grid-cols-2 gap-6 items-center">
+                            <div class="text-slate-300">
+                                <h4 class="font-bold text-white text-lg mb-2">Spin Wave Propagation</h4>
+                                <p>Simulations of a 1D chain of 10 magnetosomes demonstrated that a magnetic disturbance applied to the first particle propagates along the chain as a collective excitation (a spin wave), showing characteristic delay and damping. This confirms the potential for using spin waves for signal transmission.</p>
+                            </div>
+                            <canvas id="spin-wave-canvas" class="rounded-md w-full h-auto object-cover bg-slate-800/50" width="400" height="250"></canvas>
+                        </div>
+                        <div class="card p-6 rounded-lg grid md:grid-cols-2 gap-6 items-center">
+                             <canvas id="thermal-stability-canvas" class="rounded-md w-full h-auto object-cover bg-slate-800/50 order-last md:order-first" width="400" height="250"></canvas>
+                            <div class="text-slate-300">
+                                <h4 class="font-bold text-white text-lg mb-2">Thermal Stability</h4>
+                                <p>At room temperature (300 K), a single magnetosome's magnetic state must remain stable against thermal fluctuations. Simulations incorporating a stochastic thermal field confirmed that for particles with a high energy barrier ($K_uV/k_BT \approx 127$), the magnetisation state remains stable over nanoseconds, indicating the potential for non-volatile information storage.</p>
+                            </div>
+                        </div>
+                        <div class="card p-6 rounded-lg">
+                            <h4 class="font-bold text-white text-lg mb-4 text-center">Reservoir Computing Validation</h4>
+                             <p class="text-center text-slate-400 max-w-2xl mx-auto mb-8">A network of 20 magnetosomes was tested on benchmark computational tasks, proving its effectiveness as a reservoir computer.</p>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h5 class="font-semibold text-green-400 mb-2 text-center">Input Signal Reconstruction</h5>
+                                    <canvas id="reservoir-reconstruction-canvas" class="rounded-md w-full h-auto object-cover bg-slate-800/50" width="400" height="250"></canvas>
+                                    <p class="text-sm text-slate-400 mt-2 text-center">A linear model reconstructed the input signal with high fidelity from the reservoir's states, proving information is encoded effectively.</p>
+                                </div>
+                                 <div>
+                                    <h5 class="font-semibold text-green-400 mb-2 text-center">Frequency Classification</h5>
+                                    <canvas id="reservoir-confusion-canvas" class="rounded-md w-full h-auto object-cover bg-slate-800/50" width="400" height="250"></canvas>
+                                     <p class="text-sm text-slate-400 mt-2 text-center">The system achieved 100% accuracy distinguishing two input frequencies, demonstrating powerful pattern recognition.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </template>
+
+    <template id="page-platform">
+        <div class="container mx-auto px-6 py-12">
+            <header class="text-center mb-12 fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white glow-text mb-4">The BioSpin Platform: A 3D Bio-Hybrid Stack</h1>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">From theory to reality. The BioSpin platform is a vertically stacked, 3D architecture that integrates specialised computational layers into a single, highly efficient, non-volatile device. It is the first engineered system designed to bring the power of magnetosome computing to real-world applications like blockchain.</p>
+            </header>
+
+            <section class="mb-16 fade-in">
+                <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">The Architecture: Four Layers, Unified Function</h2>
+                 <p class="text-center text-slate-400 max-w-2xl mx-auto mb-10">Our platform is a bio-hybrid stack where each layer is optimised for a specific task, using magnetosomes arranged and controlled by a microcoil network and TMR sensors.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-2">Layer 1: Parallel Computing</h3>
+                        <p class="text-sm text-green-400 mb-3">(Reservoir)</p>
+                        <p class="text-slate-300">Executes high-dimensional, parallel tasks like DeFi calculations or SHA-256 hashing at incredible speeds (~$10^8$ ops/sec) and efficiency (~100 fJ).</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-2">Layer 2: Sequential Logic</h3>
+                         <p class="text-sm text-green-400 mb-3">(Pipeline)</p>
+                        <p class="text-slate-300">Performs traditional Boolean logic for sequential tasks, matching CMOS speeds (~GHz) but at femtojoule efficiency.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-2">Layer 3: Cache</h3>
+                         <p class="text-sm text-green-400 mb-3">(High-Speed Memory)</p>
+                        <p class="text-slate-300">Provides sub-nanosecond access to temporary data, far exceeding SRAM performance at a fraction of the energy (~fJ vs. ~nJ).</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-2">Layer 4: Nonvolatile Storage</h3>
+                         <p class="text-sm text-green-400 mb-3">(MRAM-Like)</p>
+                        <p class="text-slate-300">Stores persistent data like entire blockchain ledgers with massive endurance (~$10^{10}$ vs ~$10^6$ cycles of flash).</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="fade-in">
+                 <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">The Software: Slang#</h2>
+                 <p class="text-center text-slate-400 max-w-2xl mx-auto mb-10">Hardware this revolutionary needs a new way to be programmed. <strong>Slang#</strong> is our purpose-built, C-like programming language that abstracts the complex physics of spintronics, allowing developers to harness the BioSpin stack without needing to be physicists.</p>
+                <div class="max-w-3xl mx-auto bg-slate-900 rounded-xl overflow-hidden border border-slate-700">
+                    <div class="p-4 bg-slate-800 text-sm text-slate-300">
+                        <span class="font-mono">// Example: A simple DeFi Smart Contract in Slang#</span>
+                    </div>
+                    <pre class="p-6 text-sm overflow-x-auto"><code class="language-c">
+<span class="text-pink-400">reservoir</span> InterestCalc {
+  <span class="text-cyan-400">input</span> <span class="text-purple-400">spin</span>[5] principals, rates; 
+  <span class="text-cyan-400">output</span> <span class="text-purple-400">spin</span>[5] interests;
+
+  <span class="text-pink-400">transform</span> parallel {
+    <span class="text-gray-400">// Layer 1 executes this parallel calculation in &lt;10 ns</span>
+    interests = principals * rates * 0.01;
+  }
+}
+
+<span class="text-pink-400">pipeline</span> Verify {
+  <span class="text-cyan-400">input</span> <span class="text-purple-400">spin</span>[5] interests;
+  <span class="text-cyan-400">output</span> <span class="text-purple-400">spin</span> valid;
+  
+  <span class="text-pink-400">gate</span> majority {
+    <span class="text-gray-400">// Layer 2 performs sequential validation</span>
+    valid = majority(interests[0], interests[1], interests[2]);
+  }
+}
+
+<span class="text-pink-400">store</span> Ledger {
+  <span class="text-cyan-400">input</span> <span class="text-purple-400">spin</span>[5] interests;
+  <span class="text-gray-400">// Layer 4 writes the result to persistent storage</span>
+  write(interests);
+}
+                    </code></pre>
+                </div>
+            </section>
+        </div>
+    </template>
+    
+    <template id="page-future">
+        <div class="container mx-auto px-6 py-12">
+            <header class="text-center mb-12 fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white glow-text mb-4">The Future is Adaptive: Reconfigurable Computing</h1>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">What if your hardware could physically change its shape to become the perfect processor for any given task? Building on our BioSpin platform, we are developing the world's first physically reconfigurable nanoscale computing architecture. This isn't an incremental improvement; it's a paradigm shift where the hardware itself becomes a programmable resource.</p>
+            </header>
+
+            <section class="mb-16 fade-in">
+                <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">The Technology: Magnetorheological (MR) Fluids</h2>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-slate-300 leading-relaxed">The key is integrating our magnetosome chains within <strong>magnetorheological (MR) fluids</strong>—a class of "smart materials".</p>
+                        <ul class="mt-4 space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-green-400 font-bold text-2xl mr-4">OFF</span>
+                                <div>
+                                    <h4 class="font-semibold text-white">Liquid State</h4>
+                                    <p class="text-slate-400">The MR fluid behaves like a liquid, allowing magnetosome chains to be moved freely.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-lime-400 font-bold text-2xl mr-4">ON</span>
+                                <div>
+                                    <h4 class="font-semibold text-white">Semi-Solid State</h4>
+                                    <p class="text-slate-400">When a magnetic field is applied, particles in the fluid align, turning it into a semi-solid within milliseconds. This locks the magnetosome chains into a new, optimised position.</p>
+                                </div>
+                            </li>
+                        </ul>
+                         <p class="mt-4 text-slate-300 leading-relaxed">This allows us to dynamically reconfigure the system's topology in real-time, moving from a parallel reservoir computer to a sequential logic circuit on the fly.</p>
+                    </div>
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold text-white mb-3">A Principled Foundation</h3>
+                        <p class="text-slate-300 leading-relaxed mb-4">This concept is mathematically robust. There is a vast spectral gap between the <strong>fast (GHz)</strong> computational dynamics of the magnetosomes and the <strong>slow (kHz)</strong> mechanical reconfiguration of the MR fluid. This ensures we can reposition the chains without disturbing the logical states they hold.</p>
+                        <p class="text-slate-300 leading-relaxed mb-4">The effective field ($H_{eff}$) in the LLG equation is extended to include the influence of the MR particles ($H_{MR}$), creating a coupled system where the hardware can optimise itself.</p>
+                        <div class="p-4 bg-slate-900 rounded-md text-center text-sm overflow-x-auto">
+                            $$H_{eff,i} = H_{appl} + H_{anis,i} + H_{exch,i} + H_{dip}(m) + H_{MR}(m,R)$$
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="fade-in">
+                <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">The Reconfigurable Stack: Specialisation on Demand</h2>
+                <p class="text-center text-slate-400 max-w-2xl mx-auto mb-10">This interactive visualisation demonstrates how the same physical hardware can perform different specialised functions. Click a button to see the magnetosome chains reconfigure for a specific task.</p>
+                <div class="card p-6 rounded-xl">
+                    <canvas id="reconfigurable-stack-canvas" class="w-full h-64 md:h-96 rounded-lg bg-slate-800/50"></canvas>
+                    <div id="stack-controls" class="mt-4 flex justify-center space-x-2 md:space-x-4">
+                        <button data-config="storage" class="stack-control-btn px-4 py-2 rounded-md text-white">Storage</button>
+                        <button data-config="logic" class="stack-control-btn px-4 py-2 rounded-md text-white">Logic</button>
+                        <button data-config="reservoir" class="stack-control-btn px-4 py-2 rounded-md text-white active">Reservoir</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <template id="page-applications">
+        <div class="container mx-auto px-6 py-12">
+            <header class="text-center mb-12 fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white glow-text mb-4">Powering the Next Digital Revolution 🚀</h1>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">Our technology's unprecedented efficiency and adaptive nature unlock possibilities across the most demanding computational fields.</p>
+            </header>
+            <div class="space-y-12">
+                <div class="card p-8 rounded-xl grid md:grid-cols-3 gap-8 fade-in">
+                    <div class="md:col-span-1">
+                        <h2 class="text-3xl font-bold text-green-400">Blockchain & DeFi</h2>
+                        <p class="mt-2 text-slate-400">Crippled by energy costs and slow processing, the blockchain space is ripe for disruption.</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h3 class="font-semibold text-white mb-4">The BioSpin Solution:</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li><strong>Radical Efficiency:</strong> Reduce mining energy costs by factors of 100-1000 with femtojoule-level operations.</li>
+                            <li><strong>Massive Parallelism:</strong> Achieve ~$10^8$ ops/s for DeFi calculations, a 100,000x speedup over the EVM.</li>
+                            <li><strong>Lower Fees & New dApps:</strong> Drastically reduce gas fees and enable more complex, powerful DeFi protocols.</li>
+                            <li><strong>Future-Proof Mining:</strong> An adaptive device can reconfigure to mine different cryptocurrencies, eliminating hardware obsolescence.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-8 rounded-xl grid md:grid-cols-3 gap-8 fade-in">
+                    <div class="md:col-span-1">
+                        <h2 class="text-3xl font-bold text-green-400">AI & Edge Computing</h2>
+                        <p class="mt-2 text-slate-400">AI models require enormous data centres. We bring that power to the edge, sustainably.</p>
+                    </div>
+                    <div class="md:col-span-2">
+                         <h3 class="font-semibold text-white mb-4">The BioSpin Solution:</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li><strong>Efficient AI Processing:</strong> Reservoir and analog computing layers are naturally suited for machine learning tasks.</li>
+                            <li><strong>Unmatched Power Density:</strong> Projections show performance >100 TOPS/Watt, ideal for low-power edge AI devices.</li>
+                            <li><strong>Adaptive Learning:</strong> Reconfigurable hardware can create optimised topologies for specific neural network architectures.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-8 rounded-xl grid md:grid-cols-3 gap-8 fade-in">
+                    <div class="md:col-span-1">
+                        <h2 class="text-3xl font-bold text-green-400">Aerospace & Remote Systems</h2>
+                        <p class="mt-2 text-slate-400">For environments where power is scarce and maintenance is impossible.</p>
+                    </div>
+                    <div class="md:col-span-2">
+                         <h3 class="font-semibold text-white mb-4">The BioSpin Solution:</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li><strong>Zero-Power Standby:</strong> Non-volatile memory retains state with no power, perfect for satellites or remote sensors.</li>
+                            <li><strong>Self-Healing:</strong> The fluidic system can physically relocate tasks away from defective chains, creating resilient hardware.</li>
+                            <li><strong>Reduced Payload:</strong> A single, adaptive device can perform multiple mission functions, reducing weight and complexity.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <template id="page-about">
+        <div class="container mx-auto px-6 py-12">
+            <div class="max-w-3xl mx-auto text-center fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white glow-text mb-8">The Visionary</h1>
+                <div class="w-32 h-32 rounded-full mx-auto mb-6 bg-slate-700 border-2 border-green-400 flex items-center justify-center">
+                    <span class="text-4xl font-bold text-white">JS</span>
+                </div>
+                <h2 class="text-3xl font-bold text-white">Julien Pierre Salomon</h2>
+                <p class="text-lg text-green-400 mt-2">Bridging Physics, Biology, and Computer Science</p>
+                <div class="text-left text-slate-300 leading-relaxed mt-8 space-y-4">
+                    <p>This work is led by the pioneering research of Julien Pierre Salomon. His work creates a new path forward for sustainable computation by looking to nature for inspiration.</p>
+                    <p>The development process began not with equations, but with a deep physical intuition for how biological nanostructures might process information. Visualising mechanisms like spin waves and magnetic coupling led to the formal mathematical models, ensuring the theory remained grounded in the physical reality of the system. This unique approach, integrating intuitive conceptualisation with rigorous analysis, is the driving force behind the BioSpin platform and its future evolution.</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="page-resources">
+        <div class="container mx-auto px-6 py-12">
+            <header class="text-center mb-12 fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white glow-text mb-4">Resources & Publications</h1>
+                <p class="text-lg text-slate-300 max-w-3xl mx-auto">Dive deeper into the science and technology behind our work.</p>
+            </header>
+
+            <div class="max-w-3xl mx-auto space-y-8">
+                <section class="fade-in">
+                    <h2 class="text-2xl font-bold text-green-400 mb-4">Core Publications</h2>
+                    <div class="space-y-4">
+                        <div class="card p-6 rounded-lg">
+                            <h3 class="font-semibold text-white">White Paper: Magnetosome-Based Spintronic Computing – Pioneering a Sustainable Future for Blockchain and Beyond</h3>
+                            <p class="text-sm text-slate-400 mt-2"><strong>Abstract:</strong> As of 11:00 PM BST on Sunday, May 18, 2025, the computational demands of blockchain applications expose the unsustainable energy costs of CMOS-based systems...</p>
+                        </div>
+                         <div class="card p-6 rounded-lg">
+                            <h3 class="font-semibold text-white">Hybrid Magnetosome-Magnetorheological Fluid Computing: A Revolutionary Stack Architecture for Adaptive, Ultra-Low Power Processing</h3>
+                             <p class="text-sm text-slate-400 mt-2"><strong>Author:</strong> Julien Salomon, July 1, 2025</p>
+                        </div>
+                         <div class="card p-6 rounded-lg">
+                            <h3 class="font-semibold text-white">Magnetosome-Based Spintronic Computation: A Theoretical Framework</h3>
+                            <p class="text-sm text-slate-400 mt-2"><strong>Author:</strong> Julien Pierre Salomon</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="fade-in">
+                    <h2 class="text-2xl font-bold text-green-400 mb-4">Simulation Code</h2>
+                     <div class="card p-6 rounded-lg">
+                        <p class="text-slate-300 mb-4">The foundational simulations validating the theoretical framework, including LLG dynamics, spin wave propagation, and reservoir computing models, are available for inspection.</p>
+                        <a href="https://github.com/jaysalomon/Bio-Spin" target="_blank" rel="noopener noreferrer" class="btn-primary text-white font-bold py-2 px-6 rounded-lg inline-block">
+                            View on GitHub
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DOM Element Variables ---
+            const mainContent = document.getElementById('main-content');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // --- Constants ---
+            const chartTextColor = 'rgba(156, 163, 175, 1)'; // gray-400
+            const primaryColor = '#4ade80'; // green-400
+
+            // --- Core Functions ---
+
+            /**
+             * A robust function to typeset mathematical content with MathJax,
+             * with a retry mechanism to handle the asynchronous loading of the MathJax library.
+             * @param {HTMLElement} element The container element of the content to be typeset.
+             * @param {number} retries The number of times to retry if MathJax is not ready.
+             * @param {number} delay The delay in milliseconds between retries.
+             */
+            function typesetWithRetry(element, retries = 10, delay = 100) {
+                if (retries <= 0) {
+                    console.error("MathJax did not become available.");
+                    return;
+                }
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                    window.MathJax.typesetPromise(element ? [element] : [])
+                        .catch((err) => console.error('MathJax typesetting error:', err));
+                } else {
+                    setTimeout(() => typesetWithRetry(element, retries - 1, delay), delay);
+                }
+            }
+
+            /**
+             * Main navigation function to load page content from templates.
+             * @param {string} hash The URL hash corresponding to the page template.
+             */
+            function navigate(hash) {
+                const pageId = hash ? hash.substring(1) : 'home';
+                const template = document.getElementById(`page-${pageId}`);
+                
+                if (template) {
+                    mainContent.innerHTML = template.innerHTML;
+                    window.scrollTo(0, 0);
+                    
+                    // Initialize page-specific scripts
+                    if (pageId === 'home') initHeroCanvas();
+                    if (pageId === 'science') {
+                        drawSpinWaveChart('spin-wave-canvas');
+                        drawThermalStabilityChart('thermal-stability-canvas');
+                        drawReconstructionChart('reservoir-reconstruction-canvas');
+                        drawConfusionMatrix('reservoir-confusion-canvas');
+                    }
+                    if (pageId === 'future') {
+                        initReconfigurableStack('reconfigurable-stack-canvas', 'stack-controls');
+                    }
+                    
+                    typesetWithRetry(mainContent);
+                    initFadeInObserver();
+                } else {
+                    navigate('#home');
+                }
+                updateActiveLink(pageId);
+            }
+
+            /**
+             * Updates the active state of navigation links.
+             * @param {string} pageId The ID of the currently active page.
+             */
+            function updateActiveLink(pageId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${pageId}`);
+                });
+            }
+
+            /**
+             * Sets up the Intersection Observer for fade-in animations.
+             */
+            function initFadeInObserver() {
+                const fadeInElements = document.querySelectorAll('.fade-in');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                fadeInElements.forEach(el => observer.observe(el));
+            }
+
+            // --- Page-Specific Animation and Charting Functions ---
+
+            /**
+             * Initializes the animated particle background on the hero section.
+             */
+            function initHeroCanvas() {
+                const canvas = document.getElementById('hero-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                const numParticles = 100;
+
+                function resizeCanvas() {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                }
+
+                class Particle {
+                    constructor(x, y) {
+                        this.x = x || Math.random() * canvas.width;
+                        this.y = y || Math.random() * canvas.height;
+                        this.vx = (Math.random() - 0.5) * 0.5;
+                        this.vy = (Math.random() - 0.5) * 0.5;
+                        this.radius = 1 + Math.random() * 1.5;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(74, 222, 128, 0.8)`;
+                        ctx.fill();
+                    }
+                }
+                
+                function createParticles() {
+                    particles = [];
+                    for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                    });
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 120) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(74, 222, 128, ${1 - dist / 120})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+                resizeCanvas();
+                createParticles();
+                animate();
+            }
+
+            function drawSpinWaveChart(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let frame = 0;
+                function animate() {
+                    const w = canvas.width;
+                    const h = canvas.height;
+                    ctx.clearRect(0, 0, w, h);
+                    const numWaves = 10, amplitude = h / (numWaves * 2.5), period = w * 0.8;
+                    for (let i = 0; i < numWaves; i++) {
+                        const yOffset = h * 0.9 - (i * (h * 0.8 / numWaves)), phaseShift = i * 0.5, damping = 1 - (i / numWaves) * 0.3;
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(74, 222, 128, ${0.4 + (i/numWaves)*0.6})`;
+                        ctx.lineWidth = 1.5;
+                        for (let x = 0; x < w; x++) {
+                            const angle = (x / period) * 2 * Math.PI + (frame / 50) - phaseShift;
+                            const y = yOffset + Math.sin(angle) * amplitude * damping;
+                            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                        }
+                        ctx.stroke();
+                    }
+                    frame++;
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+
+            function drawThermalStabilityChart(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width, h = canvas.height;
+                ctx.clearRect(0, 0, w, h);
+                ctx.beginPath();
+                ctx.strokeStyle = primaryColor;
+                ctx.lineWidth = 2;
+                const stableY = h * 0.15;
+                ctx.moveTo(0, stableY + (Math.random() - 0.5) * 5);
+                for (let x = 1; x < w; x++) ctx.lineTo(x, stableY + (Math.random() - 0.5) * 5);
+                ctx.stroke();
+                ctx.fillStyle = chartTextColor;
+                ctx.font = '12px Inter';
+                ctx.fillText('Time (ns)', w / 2 - 20, h - 10);
+                ctx.save();
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillText('Mz/Ms', -h / 2 - 20, 15);
+                ctx.restore();
+                ctx.fillText('1.0', 25, stableY + 5);
+            }
+
+            function drawReconstructionChart(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width, h = canvas.height, amplitude = h * 0.35, yOffset = h / 2;
+                ctx.clearRect(0, 0, w, h);
+                ctx.beginPath();
+                ctx.strokeStyle = primaryColor;
+                ctx.lineWidth = 2;
+                for (let x = 0; x < w; x++) {
+                    const y = yOffset + Math.sin(x * 0.05) * amplitude;
+                    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                for (let x = 0; x < w; x++) {
+                    const y = yOffset + Math.sin(x * 0.05) * amplitude + (Math.random() - 0.5) * 3;
+                    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            function drawConfusionMatrix(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width, h = canvas.height, pad = 40, boxSize = (Math.min(w, h) - pad * 2) / 2;
+                ctx.clearRect(0, 0, w, h);
+                ctx.font = 'bold 16px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(pad, pad, boxSize, boxSize);
+                ctx.fillRect(pad + boxSize, pad + boxSize, boxSize, boxSize);
+                ctx.fillStyle = 'rgba(74, 222, 128, 0.2)';
+                ctx.fillRect(pad + boxSize, pad, boxSize, boxSize);
+                ctx.fillRect(pad, pad + boxSize, boxSize, boxSize);
+                ctx.fillStyle = 'white';
+                ctx.fillText('150', pad + boxSize / 2, pad + boxSize / 2);
+                ctx.fillText('150', pad + boxSize * 1.5, pad + boxSize * 1.5);
+                ctx.fillStyle = chartTextColor;
+                ctx.fillText('0', pad + boxSize * 1.5, pad + boxSize / 2);
+                ctx.fillText('0', pad + boxSize / 2, pad + boxSize * 1.5);
+                ctx.font = '12px Inter';
+                ctx.fillText('Predicted Label', w / 2, h - 10);
+                ctx.save();
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillText('True Label', -h / 2, 15);
+                ctx.restore();
+            }
+
+            function initReconfigurableStack(canvasId, controlsId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const controls = document.getElementById(controlsId);
+                let particles = [];
+                const numParticles = 150;
+                let currentConfig = 'reservoir';
+                function resizeCanvas() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.tx = this.x; this.ty = this.y;
+                        this.radius = 2 + Math.random() * 2;
+                    }
+                    update() { this.x += (this.tx - this.x) * 0.05; this.y += (this.ty - this.y) * 0.05; }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(74, 222, 128, 0.8)`;
+                        ctx.fill();
+                    }
+                }
+                for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+                function setConfig(config) {
+                    currentConfig = config;
+                    const w = canvas.width, h = canvas.height;
+                    if (config === 'storage') {
+                        const grid_size = Math.ceil(Math.sqrt(numParticles)), padX = w * 0.15, padY = h * 0.15;
+                        particles.forEach((p, i) => {
+                            p.tx = padX + (i % grid_size) * (w - padX*2) / (grid_size - 1);
+                            p.ty = padY + Math.floor(i / grid_size) * (h - padY*2) / (grid_size - 1);
+                        });
+                    } else if (config === 'logic') {
+                        const rows = 5, particles_per_row = numParticles / rows;
+                        particles.forEach((p, i) => {
+                            p.tx = w * 0.1 + (i % particles_per_row) * (w * 0.8 / particles_per_row);
+                            p.ty = h * 0.2 + Math.floor(i / particles_per_row) * (h * 0.6 / (rows - 1));
+                        });
+                    } else if (config === 'reservoir') {
+                        particles.forEach(p => {
+                            p.tx = w * 0.1 + Math.random() * w * 0.8;
+                            p.ty = h * 0.1 + Math.random() * h * 0.8;
+                        });
+                    }
+                    controls.querySelectorAll('button').forEach(btn => btn.classList.toggle('active', btn.dataset.config === config));
+                }
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => { p.update(); p.draw(); });
+                    requestAnimationFrame(animate);
+                }
+                controls.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') setConfig(e.target.dataset.config); });
+                window.addEventListener('resize', () => { resizeCanvas(); setConfig(currentConfig); });
+                resizeCanvas();
+                setConfig('reservoir');
+                animate();
+            }
+
+            // --- Event Listeners and Initialisation ---
+
+            window.addEventListener('hashchange', () => navigate(window.location.hash));
+            
+            document.body.addEventListener('click', function(e) {
+                const navLink = e.target.closest('.nav-link');
+                if (navLink) {
+                    e.preventDefault();
+                    const hash = navLink.getAttribute('href');
+                    if(window.location.hash !== hash) window.location.hash = hash;
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            let lastScrollTop = 0;
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                header.classList.toggle('bg-black/80', scrollTop > 50);
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            });
+
+            // Initial Load
+            navigate(window.location.hash || '#home');
+        });
+    </script>
+</body>
+</html>
